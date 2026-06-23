@@ -181,28 +181,40 @@ function PostCard({ post, fetchPosts }) {
       <hr />
 
       {/* Actions */}
-      <div className="d-flex justify-content-between mb-3">
-        <button
-          onClick={handleLike}
-          className="btn btn-outline-danger"
-        >
-          ❤️ Like ({post.likes.length})
-        </button>
+<div className="row g-2 mb-3">
+  <div className="col-4">
+    <button
+      onClick={handleLike}
+      className="btn btn-outline-danger w-100 h-100"
+    >
+      ❤️ Like
+      <br />
+      ({post.likes.length})
+    </button>
+  </div>
 
-        <button className="btn btn-outline-primary">
-          💬 Comments ({post.comments.length})
-        </button>
+  <div className="col-4">
+    <button
+      className="btn btn-outline-primary w-100 h-100"
+    >
+      💬 Comments
+      <br />
+      ({post.comments.length})
+    </button>
+  </div>
 
-        <button
-          onClick={handleDelete}
-          className="btn btn-outline-dark"
-        >
-          🗑 Delete
-        </button>
-      </div>
+  <div className="col-4">
+    <button
+      onClick={handleDelete}
+      className="btn btn-danger w-100 h-100"
+    >
+      🗑 Delete
+    </button>
+  </div>
+</div>
 
       {/* Comment Input */}
-      <div className="d-flex gap-2">
+      <div className="d-flex flex-column flex-sm-row gap-2">
         <input
           type="text"
           className="form-control"
