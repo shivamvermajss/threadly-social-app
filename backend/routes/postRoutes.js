@@ -30,7 +30,12 @@ router.post(
 );
 
 // Get All Posts
-router.get("/", getPosts);
+// Get All Posts
+router.get(
+  "/",
+  authMiddleware,
+  getPosts
+);
 
 // Like Post
 router.post(

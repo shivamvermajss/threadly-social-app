@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../services/api";
+
 import Navbar from "../components/Navbar";
 import PostCard from "../components/PostCard";
+import ProfileHeader from "../components/ProfileHeader";
+import ProfileStats from "../components/ProfileStats";
 
 function Profile() {
   const { username } = useParams();
 
   const [profile, setProfile] = useState(null);
 
+  // Logged-in user
+  const currentUser = JSON.parse(
+    localStorage.getItem("user")
+  );
+
+  // Check if viewing own profile
+  const isOwnProfile =
+    currentUser?.username === username;
+
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, [username]);
 
   const fetchProfile = async () => {
     try {
@@ -29,8 +41,9 @@ function Profile() {
     return (
       <>
         <Navbar />
-        <div className="container mt-5">
-          Loading...
+
+        <div className="container mt-5 text-center">
+          <h5>Loading Profile...</h5>
         </div>
       </>
     );
@@ -43,62 +56,38 @@ function Profile() {
       <div
         className="container mt-4"
         style={{
-          maxWidth: "700px",
+          maxWidth: "850px",
         }}
       >
-        <div className="card p-4 mb-4 shadow-sm">
-          <div className="text-center">
-            <div
-              style={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "50%",
-                background: "#0d6efd",
-                color: "white",
-                margin: "auto",
-                fontSize: "32px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold",
-              }}
-            >
-              {profile.username
-                .charAt(0)
-                .toUpperCase()}
-            </div>
+        {/* Profile Header */}
+        <ProfileHeader
+          profile={profile}
+          isOwnProfile={isOwnProfile}
+          fetchProfile={fetchProfile}
+          setProfile={setProfile}
+        />
 
-            <h3 className="mt-3">
-              {profile.username}
-            </h3>
+        {/* Profile Stats */}
+        <ProfileStats profile={profile} />
 
-            <div className="d-flex justify-content-center gap-4 mt-3">
-              <div>
-                <strong>
-                  {profile.totalPosts}
-                </strong>
-                <br />
-                Posts
-              </div>
+        {/* User Posts */}
+        {profile.posts.length > 0 ? (
+          profile.posts.map((post) => (
+            <PostCard
+              key={post._id}
+              post={post}
+              fetchPosts={fetchProfile}
+            />
+          ))
+        ) : (
+          <div className="card shadow-sm p-5 text-center">
+            <h4>No Posts Yet 📷</h4>
 
-              <div>
-                <strong>
-                  {profile.totalLikes}
-                </strong>
-                <br />
-                Likes
-              </div>
-            </div>
+            <p className="text-muted mb-0">
+              This user hasn't shared any posts yet.
+            </p>
           </div>
-        </div>
-
-        {profile.posts.map((post) => (
-          <PostCard
-            key={post._id}
-            post={post}
-            fetchPosts={fetchProfile}
-          />
-        ))}
+        )}
       </div>
     </>
   );

@@ -1,71 +1,245 @@
-body {
-  background-color: #f5f7fb;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
+body{
+  background:var(--light-bg);
 }
 
-* {
-  box-sizing: border-box;
+/* Cards */
+
+.card{
+  border:none!important;
+
+  border-radius:var(--radius)!important;
+
+  box-shadow:var(--shadow)!important;
+
+  transition:var(--transition);
 }
 
-.card {
-  border: none !important;
-  border-radius: 18px !important;
-  transition: transform 0.2s ease;
+.card:hover{
+
+  transform:translateY(-5px);
+
 }
 
-.card:hover {
-  transform: translateY(-2px);
+/* Images */
+
+img{
+
+  border-radius:14px;
+
+  transition:var(--transition);
+
 }
 
-textarea {
-  resize: none;
+img:hover{
+
+  transform:scale(1.02);
+
 }
 
-img {
-  border-radius: 12px;
+/* Buttons */
+
+.btn{
+
+  border-radius:12px!important;
+
+  transition:var(--transition)!important;
+
 }
 
-.btn {
-  border-radius: 10px !important;
+.btn:hover{
+
+  transform:translateY(-2px);
+
 }
 
-.navbar {
-  backdrop-filter: blur(10px);
+/* Navbar */
+
+.navbar{
+
+  backdrop-filter:blur(14px);
+
+  transition:var(--transition);
+
 }
 
-/* Dark Mode */
+/* Inputs */
 
-.dark-mode {
-  background-color: #121212 !important;
-  color: white !important;
+.form-control{
+
+  border-radius:12px;
+
+  padding:12px;
+
 }
 
-.dark-mode .card {
-  background-color: #1e1e1e !important;
-  color: white !important;
+.form-control:focus{
+
+  box-shadow:none;
+
+  border-color:var(--primary);
+
 }
 
-.dark-mode .navbar {
-  background-color: #1a1a1a !important;
+/* Textarea */
+
+textarea{
+
+  resize:none;
+
 }
 
-.dark-mode .form-control {
-  background-color: #2b2b2b !important;
-  color: white !important;
+/* Links */
+
+a{
+
+  transition:var(--transition);
+
+}
+
+a:hover{
+
+  color:var(--primary);
+
+}
+
+/* Profile Avatar */
+
+.avatar{
+
+  border-radius:50%;
+
+  object-fit:cover;
+
+}
+
+/* Feed Image */
+
+.post-image{
+
+  border-radius:16px;
+
+  overflow:hidden;
+
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar{
+
+  width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+  background:#bdbdbd;
+
+  border-radius:20px;
+
+}
+
+/* ===========================================
+   DARK MODE
+=========================================== */
+
+body.dark-mode {
+  background: #121212 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode #root {
+  background: #121212 !important;
+}
+
+body.dark-mode .container {
+  background: transparent !important;
+}
+
+body.dark-mode .card {
+  background: #1f1f1f !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+body.dark-mode .navbar {
+  background: #181818 !important;
+}
+
+body.dark-mode .form-control,
+body.dark-mode textarea,
+body.dark-mode input {
+  background: #2b2b2b !important;
+  color: #ffffff !important;
+  border: 1px solid #444 !important;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #bdbdbd !important;
+}
+
+body.dark-mode .btn-light {
+  background: #2b2b2b !important;
+  color: #ffffff !important;
   border-color: #444 !important;
 }
 
-.dark-mode .form-control::placeholder {
-  color: #bbb !important;
+body.dark-mode .btn-outline-secondary {
+  color: #ffffff !important;
+  border-color: #666 !important;
 }
 
-.dark-mode .bg-light {
-  background-color: #2b2b2b !important;
-  color: white !important;
+body.dark-mode .btn-outline-secondary:hover {
+  background: #333 !important;
 }
 
-.dark-mode .text-muted {
+body.dark-mode .bg-light {
+  background: #2b2b2b !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .text-dark {
+  color: #ffffff !important;
+}
+
+body.dark-mode .text-muted {
   color: #bdbdbd !important;
+}
+
+body.dark-mode a {
+  color: #ffffff !important;
+}
+
+body.dark-mode a:hover {
+  color: #4dabff !important;
+}
+
+body.dark-mode hr {
+  border-color: #444 !important;
+}
+
+body.dark-mode img {
+  opacity: 0.98;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+body.dark-mode .dropdown-menu {
+  background: #1f1f1f !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .dropdown-item {
+  color: #ffffff !important;
+}
+
+body.dark-mode .dropdown-item:hover {
+  background: #2b2b2b !important;
+}
+
+body.dark-mode .list-group-item {
+  background: #1f1f1f !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
 }

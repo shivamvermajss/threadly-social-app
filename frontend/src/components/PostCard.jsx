@@ -1,14 +1,42 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  FaHeart,
+  FaRegComment,
+  FaTrash,
+  FaShare,
+  FaBookmark,
+} from "react-icons/fa";
 import API from "../services/api";
 
 function PostCard({ post, fetchPosts }) {
   const [comment, setComment] = useState("");
 
+  const [loadingLike, setLoadingLike] =
+    useState(false);
+
+  const [loadingComment, setLoadingComment] =
+    useState(false);
+  
+  const [saved, setSaved] =
+  useState(post.isSaved || false);
+
+  const [loadingSave, setLoadingSave] =
+  useState(false);  
+
+  const [loadingDelete, setLoadingDelete] =
+    useState(false);
+
   const handleLike = async () => {
+    if (loadingLike) return;
+
     try {
-      const token = localStorage.getItem("token");
+      setLoadingLike(true);
+
+      const token =
+        localStorage.getItem("token");
 
       await API.post(
         `/posts/${post._id}/like`,
@@ -21,16 +49,27 @@ function PostCard({ post, fetchPosts }) {
       );
 
       fetchPosts();
+
     } catch (error) {
       console.log(error);
+
+      toast.error("Failed to like post");
+
+    } finally {
+      setLoadingLike(false);
     }
   };
 
   const handleComment = async () => {
     if (!comment.trim()) return;
 
+    if (loadingComment) return;
+
     try {
-      const token = localStorage.getItem("token");
+      setLoadingComment(true);
+
+      const token =
+        localStorage.getItem("token");
 
       await API.post(
         `/posts/${post._id}/comment`,
@@ -45,21 +84,35 @@ function PostCard({ post, fetchPosts }) {
       );
 
       setComment("");
+
       fetchPosts();
+
+      toast.success("Comment added");
+
     } catch (error) {
       console.log(error);
+
+      toast.error("Failed to comment");
+
+    } finally {
+      setLoadingComment(false);
     }
   };
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this post?"
+      "Delete this post?"
     );
 
     if (!confirmDelete) return;
 
+    if (loadingDelete) return;
+
     try {
-      const token = localStorage.getItem("token");
+      setLoadingDelete(true);
+
+      const token =
+        localStorage.getItem("token");
 
       await API.delete(
         `/posts/${post._id}`,
@@ -72,178 +125,293 @@ function PostCard({ post, fetchPosts }) {
 
       fetchPosts();
 
-      alert("Post Deleted Successfully");
+      toast.success(
+        "Post deleted successfully"
+      );
+
     } catch (error) {
       console.log(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to delete post"
       );
+
+    } finally {
+      setLoadingDelete(false);
     }
   };
 
+
+  const handleSave = async () => {
+  if (loadingSave) return;
+
+  try {
+    setLoadingSave(true);
+
+    const res = await API.put(
+      `/users/save/${post._id}`
+    );
+
+    setSaved(res.data.saved);
+
+    toast.success(res.data.message);
+
+    // Refresh the current page if a callback was provided
+    if (fetchPosts) {
+      fetchPosts();
+    }
+
+  } catch (error) {
+    console.log(error);
+
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to save post"
+    );
+
+  } finally {
+    setLoadingSave(false);
+  }
+};
+
   return (
     <div
-      className="card p-4 mb-4 shadow-sm"
+      className="card mb-4 shadow-sm"
       style={{
-        borderRadius: "18px",
-        border: "none",
+        borderRadius: "20px",
+        overflow: "hidden",
       }}
     >
       {/* Header */}
-      <div className="d-flex align-items-center mb-3">
+      <div className="d-flex justify-content-between align-items-center p-3">
 
-        {post.avatar ? (
-          <img
-            src={post.avatar}
-            alt="avatar"
-            style={{
-              width: "50px",
-              height: "50px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              marginRight: "12px",
-              border: "2px solid #0d6efd",
-            }}
-          />
-        ) : (
-          <div
-            style={{
-              width: "50px",
-              height: "50px",
-              borderRadius: "50%",
-              backgroundColor: "#0d6efd",
-              color: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              fontSize: "20px",
-              marginRight: "12px",
-            }}
-          >
-            {post.username?.charAt(0).toUpperCase()}
+        <div className="d-flex align-items-center">
+
+          {post.avatar ? (
+            <img
+              src={post.avatar}
+              alt="avatar"
+              style={{
+                width: "55px",
+                height: "55px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "2px solid #0d6efd",
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: "55px",
+                height: "55px",
+                borderRadius: "50%",
+                background:
+                  "linear-gradient(135deg,#0d6efd,#5fa8ff)",
+                color: "white",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontWeight: "bold",
+                fontSize: "22px",
+              }}
+            >
+              {post.username
+                ?.charAt(0)
+                .toUpperCase()}
+            </div>
+          )}
+
+          <div className="ms-3">
+
+            <Link
+              to={`/profile/${post.username}`}
+              className="text-decoration-none"
+            >
+              <h6 className="fw-bold mb-0">
+                {post.username}
+              </h6>
+            </Link>
+
+            <small className="text-muted">
+              @{post.username?.toLowerCase()} •{" "}
+              {formatDistanceToNow(
+                new Date(post.createdAt),
+                {
+                  addSuffix: true,
+                }
+              )}
+            </small>
+
           </div>
-        )}
 
-        <div>
-          <Link
-            to={`/profile/${post.username}`}
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-            }}
-          >
-            <h6 className="mb-0">
-              {post.username}
-            </h6>
-          </Link>
-
-          <small className="text-muted">
-            @{post.username?.toLowerCase()}
-          </small>
-
-          <br />
-
-          <small className="text-muted">
-            {formatDistanceToNow(
-              new Date(post.createdAt),
-              {
-                addSuffix: true,
-              }
-            )}
-          </small>
         </div>
+
+        <button className="btn btn-sm">
+          ⋮
+        </button>
+
       </div>
 
-      {/* Post Text */}
+      {/* Text */}
       {post.text && (
-        <p className="mb-3">
-          {post.text}
-        </p>
+        <div className="px-3 pb-3">
+          <p
+            className="mb-0"
+            style={{
+              fontSize: "16px",
+              lineHeight: "1.7",
+            }}
+          >
+            {post.text}
+          </p>
+        </div>
       )}
 
-      {/* Post Image */}
+      {/* Image */}
       {post.image && (
-        <img
-          src={post.image}
-          alt="post"
-          className="img-fluid rounded mb-3"
-          style={{
-            maxHeight: "450px",
-            width: "100%",
-            objectFit: "cover",
-          }}
-        />
+        <div className="overflow-hidden">
+          <img
+            src={post.image}
+            alt="post"
+            className="img-fluid w-100"
+            style={{
+              maxHeight: "500px",
+              objectFit: "cover",
+              transition: ".3s",
+            }}
+          />
+        </div>
       )}
 
-      <hr />
+      {/* Action Bar */}
 
-      {/* Actions */}
-<div className="d-flex gap-2 mb-3">
-  <button
-    onClick={handleLike}
-    className="btn btn-outline-danger flex-fill"
-  >
-    ❤️ Like ({post.likes.length})
-  </button>
-
-  <button
-    className="btn btn-outline-primary flex-fill"
-  >
-    💬 Comment ({post.comments.length})
-  </button>
-
-  <button
-    onClick={handleDelete}
-    className="btn btn-outline-secondary flex-fill"
-  >
-    🗑 Delete
-  </button>
-</div>
-
-      {/* Comment Input */}
-      <div className="d-flex gap-2">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Write a comment..."
-          value={comment}
-          onChange={(e) =>
-            setComment(e.target.value)
-          }
-        />
+      <div className="d-flex justify-content-around align-items-center p-3 border-top">
 
         <button
-          onClick={handleComment}
-          className="btn btn-primary"
+          onClick={handleLike}
+          disabled={loadingLike}
+          className="btn btn-light"
         >
-          Add
+          <FaHeart
+            className="text-danger me-2"
+          />
+
+          {post.likes.length}
         </button>
+
+        <button
+          className="btn btn-light"
+        >
+          <FaRegComment
+            className="text-primary me-2"
+          />
+
+          {post.comments.length}
+        </button>
+
+        <button
+          className="btn btn-light"
+        >
+          <FaShare className="me-2" />
+
+          Share
+        </button>
+
+        <button
+  onClick={handleSave}
+  disabled={loadingSave}
+  className="btn btn-light"
+>
+  {loadingSave ? (
+    <>
+      <span
+        className="spinner-border spinner-border-sm me-2"
+      ></span>
+      Please wait...
+    </>
+  ) : (
+    <>
+      <FaBookmark
+        className={
+          saved ? "text-warning me-2" : "me-2"
+        }
+      />
+      {saved ? "Saved" : "Save"}
+    </>
+  )}
+</button>
+
+        <button
+          onClick={handleDelete}
+          disabled={loadingDelete}
+          className="btn btn-light text-danger"
+        >
+          <FaTrash />
+        </button>
+
+      </div>
+
+      {/* Comment Box */}
+
+      <div className="p-3">
+
+        <div className="input-group">
+
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Write a comment..."
+            value={comment}
+            onChange={(e) =>
+              setComment(
+                e.target.value
+              )
+            }
+          />
+
+          <button
+            onClick={handleComment}
+            disabled={loadingComment}
+            className="btn btn-primary"
+          >
+            Post
+          </button>
+
+        </div>
+
       </div>
 
       {/* Comments */}
+
       {post.comments.length > 0 && (
-        <div className="mt-3">
+
+        <div className="px-3 pb-3">
+
           {post.comments.map(
             (comment, index) => (
+
               <div
                 key={index}
-                className="bg-light rounded p-2 mb-2"
+                className="bg-light rounded-4 p-3 mb-2"
               >
                 <strong>
                   {comment.username}
                 </strong>
 
-                <p className="mb-0">
+                <div>
                   {comment.text}
-                </p>
+                </div>
+
               </div>
+
             )
           )}
+
         </div>
+
       )}
+
     </div>
   );
 }

@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Notification = require("../models/Notification");
 
 const createPost = async (req, res) => {
   try {
@@ -48,10 +49,31 @@ const createPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find()
-      .sort({ createdAt: -1 });
+    console.log("Logged in user:", req.user);
 
-    res.status(200).json(posts);
+    const posts = await Post.find().sort({
+      createdAt: -1,
+    });
+
+    console.log("Total posts:", posts.length);
+
+    const currentUser = await User.findById(req.user.id)
+      .select("savedPosts");
+
+    const updatedPosts = posts.map((post) => {
+      const postObj = post.toObject();
+
+      postObj.isSaved =
+        currentUser.savedPosts.some(
+          (id) =>
+            id.toString() === post._id.toString()
+        );
+
+      return postObj;
+    });
+
+    res.status(200).json(updatedPosts);
+
   } catch (error) {
     console.log(error);
 
@@ -71,7 +93,9 @@ const likePost = async (req, res) => {
       });
     }
 
-    const alreadyLiked = post.likes.includes(req.user.id);
+    const alreadyLiked = post.likes.some(
+      (id) => id.toString() === req.user.id
+    );
 
     if (alreadyLiked) {
       post.likes = post.likes.filter(
@@ -79,6 +103,16 @@ const likePost = async (req, res) => {
       );
     } else {
       post.likes.push(req.user.id);
+
+      // Create notification only if user likes someone else's post
+      if (post.user.toString() !== req.user.id) {
+        await Notification.create({
+          receiver: post.user,
+          sender: req.user.id,
+          type: "like",
+          post: post._id,
+        });
+      }
     }
 
     await post.save();
@@ -89,6 +123,7 @@ const likePost = async (req, res) => {
         : "Post liked",
       likesCount: post.likes.length,
     });
+
   } catch (error) {
     console.log(error);
 
@@ -116,10 +151,21 @@ const addComment = async (req, res) => {
 
     await post.save();
 
+    // Create notification only if commenting on someone else's post
+    if (post.user.toString() !== req.user.id) {
+      await Notification.create({
+        receiver: post.user,
+        sender: req.user.id,
+        type: "comment",
+        post: post._id,
+      });
+    }
+
     res.status(200).json({
       message: "Comment added successfully",
       comments: post.comments,
     });
+
   } catch (error) {
     console.log(error);
 

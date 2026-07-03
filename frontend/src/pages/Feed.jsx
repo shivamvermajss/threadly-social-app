@@ -10,15 +10,26 @@ function Feed() {
   const [search, setSearch] = useState("");
 
   const fetchPosts = async () => {
-    try {
-      const res = await API.get("/posts");
-      setPosts(res.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await API.get("/posts", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setPosts(res.data);
+  } catch (error) {
+    console.log(error);
+
+    console.log(error.response?.data);
+
+    setPosts([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchPosts();
@@ -52,7 +63,7 @@ function Feed() {
               color: "#0d6efd",
             }}
           >
-            Social Feed
+            Threadly Feed
           </h2>
 
           <p className="text-muted">

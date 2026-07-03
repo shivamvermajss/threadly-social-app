@@ -74,7 +74,7 @@ function Login() {
           className="text-center mb-4"
           style={{ color: "#0d6efd" }}
         >
-          Social App
+          Threadly
         </h2>
 
         <form onSubmit={handleLogin}>
