@@ -2,6 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
+// Test Route
 router.delete("/test", (req, res) => {
   console.log("TEST DELETE HIT");
 
@@ -16,12 +17,17 @@ const upload = require("../config/multer");
 const {
   createPost,
   getPosts,
+  getSinglePost,
+  updatePost,
   likePost,
   addComment,
+  deleteComment,
   deletePost,
 } = require("../controllers/postController");
 
+// ===============================
 // Create Post
+// ===============================
 router.post(
   "/",
   authMiddleware,
@@ -29,33 +35,68 @@ router.post(
   createPost
 );
 
+// ===============================
 // Get All Posts
-// Get All Posts
+// ===============================
 router.get(
   "/",
   authMiddleware,
   getPosts
 );
 
-// Like Post
+// ===============================
+// Get Single Post
+// ===============================
+router.get(
+  "/:id",
+  authMiddleware,
+  getSinglePost
+);
+
+// ===============================
+// Like / Unlike Post
+// ===============================
 router.post(
   "/:id/like",
   authMiddleware,
   likePost
 );
 
-// Comment Post
+// ===============================
+// Add Comment
+// ===============================
 router.post(
   "/:id/comment",
   authMiddleware,
   addComment
 );
 
+// Delete Comment
+router.delete(
+  "/:postId/comment/:commentId",
+  authMiddleware,
+  deleteComment
+);
+
+// ===============================
+// Update Post
+// ===============================
+router.put(
+  "/:id",
+  authMiddleware,
+  upload.single("image"),
+  updatePost
+);
+
+// ===============================
 // Delete Post
+// ===============================
 router.delete(
   "/:id",
   authMiddleware,
   deletePost
 );
+
+
 
 module.exports = router;

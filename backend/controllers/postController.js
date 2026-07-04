@@ -83,6 +83,46 @@ const getPosts = async (req, res) => {
   }
 };
 
+// ===============================
+// Get Single Post
+// ===============================
+const getSinglePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+      });
+    }
+
+    let isSaved = false;
+
+    if (req.user) {
+      const currentUser = await User.findById(req.user.id)
+        .select("savedPosts");
+
+      isSaved = currentUser.savedPosts.some(
+        (id) => id.toString() === post._id.toString()
+      );
+    }
+
+    const postObj = post.toObject();
+    postObj.isSaved = isSaved;
+
+    res.status(200).json(postObj);
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
+
+  }
+};
+
 const likePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -97,15 +137,39 @@ const likePost = async (req, res) => {
       (id) => id.toString() === req.user.id
     );
 
+    // ===============================
+    // Unlike
+    // ===============================
     if (alreadyLiked) {
       post.likes = post.likes.filter(
         (id) => id.toString() !== req.user.id
       );
-    } else {
-      post.likes.push(req.user.id);
 
-      // Create notification only if user likes someone else's post
-      if (post.user.toString() !== req.user.id) {
+      await post.save();
+
+      return res.status(200).json({
+        message: "Post unliked",
+        likesCount: post.likes.length,
+      });
+    }
+
+    // ===============================
+    // Like
+    // ===============================
+    post.likes.push(req.user.id);
+
+    // Create notification only if liking someone else's post
+    if (post.user.toString() !== req.user.id) {
+      // Prevent duplicate notifications
+      const notificationExists =
+        await Notification.findOne({
+          receiver: post.user,
+          sender: req.user.id,
+          type: "like",
+          post: post._id,
+        });
+
+      if (!notificationExists) {
         await Notification.create({
           receiver: post.user,
           sender: req.user.id,
@@ -118,9 +182,7 @@ const likePost = async (req, res) => {
     await post.save();
 
     res.status(200).json({
-      message: alreadyLiked
-        ? "Post unliked"
-        : "Post liked",
+      message: "Post liked",
       likesCount: post.likes.length,
     });
 
@@ -135,6 +197,12 @@ const likePost = async (req, res) => {
 const addComment = async (req, res) => {
   try {
     const { text } = req.body;
+
+    if (!text.trim()) {
+      return res.status(400).json({
+        message: "Comment cannot be empty",
+      });
+    }
 
     const post = await Post.findById(req.params.id);
 
@@ -151,7 +219,9 @@ const addComment = async (req, res) => {
 
     await post.save();
 
-    // Create notification only if commenting on someone else's post
+    // ===============================
+    // Create Notification
+    // ===============================
     if (post.user.toString() !== req.user.id) {
       await Notification.create({
         receiver: post.user,
@@ -172,6 +242,52 @@ const addComment = async (req, res) => {
     res.status(500).json({
       message: "Server Error",
     });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  try {
+    const { postId, commentId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+      });
+    }
+
+    const comment = post.comments.id(commentId);
+
+    if (!comment) {
+      return res.status(404).json({
+        message: "Comment not found",
+      });
+    }
+
+    // Only the comment owner can delete
+    if (comment.username !== req.user.username) {
+      return res.status(403).json({
+        message: "Not authorized",
+      });
+    }
+
+    comment.deleteOne();
+
+    await post.save();
+
+    res.status(200).json({
+      message: "Comment deleted successfully",
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
+
   }
 };
 
@@ -212,10 +328,61 @@ const deletePost = async (req, res) => {
   }
 };
 
+// ===============================
+// Update Post
+// ===============================
+const updatePost = async (req, res) => {
+  try {
+    const { text } = req.body;
+
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+      });
+    }
+
+    // Only owner can edit
+    if (post.user.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "Not authorized",
+      });
+    }
+
+    // Update text
+    post.text = text;
+
+    // Update image only if a new image is uploaded
+    if (req.file) {
+      post.image = req.file.path;
+    }
+
+    await post.save();
+
+    res.status(200).json({
+      message: "Post updated successfully",
+      post,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
+
+  }
+};
+
 module.exports = {
   createPost,
   getPosts,
+  getSinglePost,
+  updatePost,
   likePost,
   addComment,
+  deleteComment,
   deletePost,
 };

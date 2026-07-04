@@ -6,17 +6,18 @@ function CreatePost({ fetchPosts }) {
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handlePost = async () => {
     if (!text.trim() && !image) {
-      toast.error(
-        "Please add text or image"
-      );
+      toast.error("Please add text or image");
       return;
     }
 
+    if (loading) return;
+
     try {
-      const token = localStorage.getItem("token");
+      setLoading(true);
 
       const formData = new FormData();
 
@@ -26,33 +27,30 @@ function CreatePost({ fetchPosts }) {
         formData.append("image", image);
       }
 
-      await API.post(
-        "/posts",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      );
+      await API.post("/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       setText("");
       setImage(null);
       setPreview(null);
 
-      toast.success(
-        "Post Created Successfully 🚀"
-      );
+      toast.success("Post Created Successfully 🚀");
 
       fetchPosts();
+
     } catch (error) {
       console.log(error);
 
       toast.error(
+        error.response?.data?.message ||
         "Failed to create post"
       );
+
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,7 +61,7 @@ function CreatePost({ fetchPosts }) {
         borderRadius: "18px",
       }}
     >
-      <h5 className="mb-3">
+      <h5 className="fw-bold mb-3">
         Create Post
       </h5>
 
@@ -90,6 +88,8 @@ function CreatePost({ fetchPosts }) {
             setPreview(
               URL.createObjectURL(file)
             );
+          } else {
+            setPreview(null);
           }
         }}
       />
@@ -109,9 +109,17 @@ function CreatePost({ fetchPosts }) {
 
       <button
         onClick={handlePost}
+        disabled={loading}
         className="btn btn-primary w-100"
       >
-        Create Post
+        {loading ? (
+          <>
+            <span className="spinner-border spinner-border-sm me-2"></span>
+            Posting...
+          </>
+        ) : (
+          "Create Post"
+        )}
       </button>
     </div>
   );

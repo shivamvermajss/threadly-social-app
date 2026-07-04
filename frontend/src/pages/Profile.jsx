@@ -5,7 +5,6 @@ import API from "../services/api";
 import Navbar from "../components/Navbar";
 import PostCard from "../components/PostCard";
 import ProfileHeader from "../components/ProfileHeader";
-import ProfileStats from "../components/ProfileStats";
 
 function Profile() {
   const { username } = useParams();
@@ -66,9 +65,6 @@ function Profile() {
           fetchProfile={fetchProfile}
           setProfile={setProfile}
         />
-
-        {/* Profile Stats */}
-        <ProfileStats profile={profile} />
 
         {/* User Posts */}
         {profile.posts.length > 0 ? (

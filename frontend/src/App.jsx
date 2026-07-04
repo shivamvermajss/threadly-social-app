@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Search from "./pages/Search";
 import SavedPosts from "./pages/SavedPosts";
+import PostDetails from "./pages/PostDetails";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -34,6 +35,16 @@ function App() {
             element={
               <ProtectedRoute>
                 <Feed />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Single Post */}
+          <Route
+            path="/post/:id"
+            element={
+              <ProtectedRoute>
+                <PostDetails />
               </ProtectedRoute>
             }
           />

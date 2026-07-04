@@ -91,3 +91,36 @@ select {
   background: rgba(13, 110, 253, 0.25);
   color: inherit;
 }
+
+
+/* ==========================
+   Like Animation
+========================== */
+
+.like-icon {
+  transition: all 0.25s ease;
+}
+
+.like-icon.liked {
+  color: #dc3545;
+}
+
+.like-icon.pop {
+  animation: likePop .3s ease;
+}
+
+@keyframes likePop {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.45);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}

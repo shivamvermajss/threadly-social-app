@@ -1,35 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import API from "../services/api";
+
+import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
 import PostCard from "../components/PostCard";
-import Navbar from "../components/Navbar";
+
+import { ThemeContext } from "../context/ThemeContext";
 
 function Feed() {
+  const { darkMode } = useContext(ThemeContext);
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   const fetchPosts = async () => {
-  try {
-    const token = localStorage.getItem("token");
+    try {
+      const res = await API.get("/posts");
 
-    const res = await API.get("/posts", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      setPosts(res.data);
+    } catch (error) {
+      console.log(error);
 
-    setPosts(res.data);
-  } catch (error) {
-    console.log(error);
-
-    console.log(error.response?.data);
-
-    setPosts([]);
-  } finally {
-    setLoading(false);
-  }
-};
+      setPosts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -39,6 +36,7 @@ function Feed() {
     return (
       <>
         <Navbar />
+
         <div className="text-center mt-5">
           <h5>Loading Posts...</h5>
         </div>
@@ -51,16 +49,19 @@ function Feed() {
       <Navbar />
 
       <div
-        className="container mt-4"
+        className="container mt-4 pb-5"
         style={{
           maxWidth: "700px",
         }}
       >
         <div className="mb-4">
+
           <h2
+            className="fw-bold"
             style={{
-              fontWeight: "700",
-              color: "#0d6efd",
+              color: darkMode
+                ? "#ffffff"
+                : "#0d6efd",
             }}
           >
             Threadly Feed
@@ -69,9 +70,11 @@ function Feed() {
           <p className="text-muted">
             Share your thoughts with everyone
           </p>
+
         </div>
 
-        {/* Search Bar */}
+        {/* Search */}
+
         <input
           type="text"
           className="form-control mb-4"
@@ -82,15 +85,23 @@ function Feed() {
           }
         />
 
-        <CreatePost fetchPosts={fetchPosts} />
+        {/* Create */}
+
+        <CreatePost
+          fetchPosts={fetchPosts}
+        />
+
+        {/* Posts */}
 
         {posts.length === 0 ? (
-          <div className="text-center mt-5">
-            <h5>No Posts Yet</h5>
+          <div className="card p-5 text-center">
 
-            <p className="text-muted">
+            <h4>No Posts Yet 📷</h4>
+
+            <p className="text-muted mb-0">
               Create your first post.
             </p>
+
           </div>
         ) : (
           posts
@@ -109,6 +120,7 @@ function Feed() {
               />
             ))
         )}
+
       </div>
     </>
   );
