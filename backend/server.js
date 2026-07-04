@@ -40,7 +40,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://threadly-a-social-app-2o3p.vercel.app",
+      "https://threadly-social-app.vercel.app",
     ],
     credentials: true,
   })
