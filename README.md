@@ -1,107 +1,104 @@
-# 🚀 Threadly – A Social Media Platform
+# 🚀 Threadly – A Modern Social Media Platform
 
-Threadly is a modern full-stack social media application built using the MERN Stack. Users can create posts, upload images, like posts, comment on posts, manage profiles, and enjoy a responsive user experience with dark mode support.
+Threadly is a full-stack social media application inspired by platforms like Threads and Instagram. It enables users to create posts, interact with others, manage profiles, receive notifications, and enjoy a clean, responsive experience.
 
-## 🌐 Live Demo
+Built using the **MERN Stack**, Threadly demonstrates authentication, REST APIs, image uploads, notifications, and modern frontend development.
 
-### Frontend
+---
 
-https://threadly-a-social-app-2o3p.vercel.app/
+## 📸 Screenshots
 
-### Backend API
+> Add screenshots of your application here.
 
-https://threadly-a-social-app.onrender.com
+| Home Feed | Profile | Notifications |
+|-----------|----------|---------------|
+| ![](screenshots/feed.png) | ![](screenshots/profile.png) | ![](screenshots/notifications.png) |
 
 ---
 
 ## ✨ Features
 
 ### 🔐 Authentication
-
-* User Signup & Login
-* JWT Authentication
-* Protected Routes
-* Persistent Login Sessions
+- User Registration
+- Secure Login using JWT
+- Protected Routes
+- Persistent Login
 
 ### 👤 User Profile
-
-* Profile Page
-* Profile Avatar Upload
-* User Posts Display
-* Post Statistics
+- View Public Profiles
+- Edit Profile
+- Upload Profile Picture
+- Upload Cover Image
+- Bio, Website & Location
+- Follow / Unfollow Users
 
 ### 📝 Posts
+- Create Text Posts
+- Upload Images
+- Edit Posts
+- Delete Posts
+- Individual Post Page
+- Share Posts via Link
+- Copy Share Link
+- Mobile Native Share Support
 
-* Create Text Posts
-* Upload Images with Posts
-* Delete Own Posts
-* View All Posts Feed
+### ❤️ Social Interactions
+- Like / Unlike Posts
+- Animated Like Button
+- Comment on Posts
+- Delete Own Comments
+- Save / Unsave Posts
+- Search Posts
 
-### ❤️ Engagement
+### 🔔 Notifications
+- Follow Notifications
+- Like Notifications
+- Comment Notifications
+- Mark Notifications as Read
+- Navigate Directly to Related Post or Profile
 
-* Like / Unlike Posts
-* Add Comments
-* Real-time Feed Refresh
-
-### 🎨 UI Features
-
-* Responsive Design
-* Dark Mode Toggle
-* Modern Bootstrap UI
-* Toast Notifications
-
-### ☁️ Cloud Storage
-
-* Cloudinary Image Uploads
-* Profile Avatar Storage
-* Post Image Storage
+### 🎨 User Experience
+- Responsive Design
+- Dark Mode
+- Toast Notifications
+- Image Preview Before Upload
+- Loading Indicators
+- Modern UI with Bootstrap
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
 ### Frontend
-
-* React.js
-* React Router DOM
-* Axios
-* Bootstrap 5
-* React Toastify
-* Date-fns
+- React.js
+- React Router DOM
+- Axios
+- Bootstrap 5
+- React Icons
+- React Toastify
+- Date-fns
 
 ### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Multer
+- Cloudinary
 
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* JWT Authentication
-* Bcrypt.js
-* Multer
-* Cloudinary
+### Database
+- MongoDB Atlas
 
-### Deployment
-
-* Frontend: Vercel
-* Backend: Render
-* Database: MongoDB Atlas
+### Image Storage
+- Cloudinary
 
 ---
 
 ## 📂 Project Structure
 
-```bash
+```
 Threadly/
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   ├── services/
-│   │   └── App.jsx
-│   │
-│   └── package.json
 │
 ├── backend/
 │   ├── config/
@@ -112,31 +109,66 @@ Threadly/
 │   ├── server.js
 │   └── package.json
 │
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+│
 └── README.md
 ```
+
+---
 
 ## ⚙️ Installation
 
 ### Clone Repository
 
 ```bash
-git clone https://github.com/shivamvermajss/Threadly---A-Social-App-.git
-cd Threadly---A-Social-App-
+git clone https://github.com/yourusername/threadly-social.git
 ```
+
+### Navigate to Project
+
+```bash
+cd threadly-social
+```
+
+---
 
 ### Backend Setup
 
 ```bash
 cd backend
 npm install
+npm run dev
 ```
 
-Create a `.env` file:
+---
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file inside the backend directory.
 
 ```env
 PORT=5000
 
-MONGO_URI=your_mongodb_connection_string
+MONGO_URI=your_mongodb_connection
 
 JWT_SECRET=your_secret_key
 
@@ -147,119 +179,82 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-Run Backend:
-
-```bash
-npm start
-```
-
-### Frontend Setup
-
-```bash
-cd frontend
-npm install
-```
-
-Create a `.env` file:
+Create a `.env` file inside the frontend directory.
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
-Run Frontend:
-
-```bash
-npm run dev
-```
-
 ---
 
-## 📡 API Endpoints
+## 🌐 API Endpoints
 
 ### Authentication
 
-```http
-POST /api/auth/signup
-POST /api/auth/login
-```
+- POST `/api/auth/register`
+- POST `/api/auth/login`
 
 ### Posts
 
-```http
-GET    /api/posts
-POST   /api/posts
-DELETE /api/posts/:id
-POST   /api/posts/:id/like
-POST   /api/posts/:id/comment
-```
+- GET `/api/posts`
+- POST `/api/posts`
+- PUT `/api/posts/:id`
+- DELETE `/api/posts/:id`
+- POST `/api/posts/:id/like`
+- POST `/api/posts/:id/comment`
 
 ### Users
 
-```http
-GET /api/users/:username
-```
+- GET `/api/users/:username`
+- PUT `/api/users/profile`
+- PUT `/api/users/follow/:id`
+- PUT `/api/users/save/:id`
+
+### Notifications
+
+- GET `/api/notifications`
+- PUT `/api/notifications/:id`
 
 ---
 
-## 📸 Screenshots
+## 🚀 Future Improvements
 
-### Login Page
-
-* Secure JWT Authentication
-
-### Feed Page
-
-* Create Posts
-* Like Posts
-* Comment on Posts
-* Delete Posts
-
-### Profile Page
-
-* User Information
-* User Posts
-* Profile Avatar
-
-### Dark Mode
-
-* Light/Dark Theme Toggle
+- Real-Time Chat (Socket.IO)
+- Story Feature
+- Reels / Short Videos
+- Infinite Scrolling
+- Hashtags
+- Mentions
+- Email Verification
+- Forgot Password
+- Admin Dashboard
+- Push Notifications
 
 ---
 
-## 🚀 Deployment
+## 📈 Learning Outcomes
 
-### Frontend
+This project helped me strengthen my knowledge of:
 
-Deployed on Vercel
-
-https://threadly-a-social-app.vercel.app/
-
-### Backend
-
-Deployed on Render
-
-https://threadly-a-social-app.onrender.com
-
----
-
-## 🔮 Future Improvements
-
-* Follow / Unfollow Users
-* Real-Time Chat
-* Notifications System
-* Bookmark Posts
-* Story Feature
-* User Search
-* Friend Requests
-* Real-Time Updates using Socket.io
+- MERN Stack Development
+- REST API Design
+- JWT Authentication
+- MongoDB & Mongoose
+- Cloudinary Image Upload
+- React Context API
+- Protected Routes
+- CRUD Operations
+- State Management
+- Responsive UI Design
+- Modern React Development
 
 ---
 
 ## 👨‍💻 Author
 
-### Shivam Verma
+**Shivam Verma**
 
-**Full Stack Developer | MERN Stack Developer**
+**Full Stack Developer (MERN)**
 
 GitHub:
 https://github.com/shivamvermajss
@@ -271,4 +266,6 @@ https://www.linkedin.com/in/shivam-verma-227b37384/
 
 ## ⭐ Support
 
-If you like this project, please give it a ⭐ on GitHub and share your feedback.
+If you found this project helpful, consider giving it a ⭐ on GitHub.
+
+It motivates me to build more amazing projects!
