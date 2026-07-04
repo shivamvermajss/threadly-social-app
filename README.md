@@ -1,75 +1,125 @@
 # 🚀 Threadly – A Modern Social Media Platform
 
-Threadly is a full-stack social media application inspired by platforms like Threads and Instagram. It enables users to create posts, interact with others, manage profiles, receive notifications, and enjoy a clean, responsive experience.
+<p align="center">
 
-Built using the **MERN Stack**, Threadly demonstrates authentication, REST APIs, image uploads, notifications, and modern frontend development.
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?logo=mongodb)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange)
+![Cloudinary](https://img.shields.io/badge/Image-Cloudinary-blue)
+![License](https://img.shields.io/badge/License-MIT-success)
+
+</p>
+
+Threadly is a **full-stack social media platform** inspired by **Threads** and **Instagram**, where users can create posts, upload images, interact with other users, receive notifications, follow profiles, and enjoy a modern responsive interface.
+
+Built using the **MERN Stack**, the project demonstrates authentication, CRUD operations, REST APIs, image uploads, notifications, responsive UI, and modern React development.
 
 ---
 
-## 📸 Screenshots
+# 🌐 Live Demo
 
-> Add screenshots of your application here.
+### 🚀 Frontend
 
-| Home Feed | Profile | Notifications |
-|-----------|----------|---------------|
-| ![](screenshots/feed.png) | ![](screenshots/profile.png) | ![](screenshots/notifications.png) |
+https://threadly-social-app.vercel.app/
+
+### ⚙ Backend API
+
+https://threadly-social-app.onrender.com
+
+### 💻 GitHub Repository
+
+https://github.com/shivamvermajss/threadly-social-app
 
 ---
 
-## ✨ Features
+# 📸 Screenshots
 
-### 🔐 Authentication
+## 📰 Feed
+
+<img src="screenshots/feed.png" width="900"/>
+
+---
+
+## 👤 Profile
+
+<img src="screenshots/profile.png" width="900"/>
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication
+
 - User Registration
 - Secure Login using JWT
 - Protected Routes
 - Persistent Login
 
-### 👤 User Profile
-- View Public Profiles
+---
+
+## 👤 User Profile
+
+- Public Profiles
 - Edit Profile
-- Upload Profile Picture
-- Upload Cover Image
-- Bio, Website & Location
+- Profile Picture Upload
+- Cover Image Upload
+- Bio
+- Website
+- Location
 - Follow / Unfollow Users
 
-### 📝 Posts
+---
+
+## 📝 Posts
+
 - Create Text Posts
 - Upload Images
 - Edit Posts
 - Delete Posts
 - Individual Post Page
-- Share Posts via Link
+- Share Posts
 - Copy Share Link
-- Mobile Native Share Support
+- Native Mobile Sharing
 
-### ❤️ Social Interactions
+---
+
+## ❤️ Social Features
+
 - Like / Unlike Posts
-- Animated Like Button
+- Animated Like Button ❤️
 - Comment on Posts
 - Delete Own Comments
 - Save / Unsave Posts
 - Search Posts
 
-### 🔔 Notifications
+---
+
+## 🔔 Notifications
+
 - Follow Notifications
 - Like Notifications
 - Comment Notifications
-- Mark Notifications as Read
-- Navigate Directly to Related Post or Profile
-
-### 🎨 User Experience
-- Responsive Design
-- Dark Mode
-- Toast Notifications
-- Image Preview Before Upload
-- Loading Indicators
-- Modern UI with Bootstrap
+- Mark as Read
+- Navigate directly to Profile/Post
 
 ---
 
-## 🛠 Tech Stack
+## 🎨 UI / UX
 
-### Frontend
+- Responsive Design
+- Dark Mode
+- Toast Notifications
+- Loading Indicators
+- Image Preview
+- Beautiful Bootstrap UI
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
 - React.js
 - React Router DOM
 - Axios
@@ -78,7 +128,10 @@ Built using the **MERN Stack**, Threadly demonstrates authentication, REST APIs,
 - React Toastify
 - Date-fns
 
-### Backend
+---
+
+## Backend
+
 - Node.js
 - Express.js
 - MongoDB
@@ -87,61 +140,73 @@ Built using the **MERN Stack**, Threadly demonstrates authentication, REST APIs,
 - Multer
 - Cloudinary
 
-### Database
+---
+
+## Database
+
 - MongoDB Atlas
 
-### Image Storage
+---
+
+## Image Storage
+
 - Cloudinary
 
 ---
 
-## 📂 Project Structure
+# 📂 Folder Structure
 
-```
-Threadly/
+```text
+Threadly
 │
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
+├── backend
+│   ├── config
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
 │   ├── server.js
 │   └── package.json
 │
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   ├── services/
+├── frontend
+│   ├── public
+│   ├── src
+│   │   ├── components
+│   │   ├── context
+│   │   ├── pages
+│   │   ├── services
 │   │   ├── App.jsx
 │   │   └── main.jsx
 │   └── package.json
+│
+├── screenshots
+│   ├── feed.png
+│   └── profile.png
 │
 └── README.md
 ```
 
 ---
 
-## ⚙️ Installation
+# ⚙ Installation
 
-### Clone Repository
-
-```bash
-git clone https://github.com/yourusername/threadly-social.git
-```
-
-### Navigate to Project
+## Clone Repository
 
 ```bash
-cd threadly-social
+git clone https://github.com/shivamvermajss/threadly-social-app.git
 ```
 
 ---
 
-### Backend Setup
+## Move into Project
+
+```bash
+cd threadly-social-app
+```
+
+---
+
+## Backend
 
 ```bash
 cd backend
@@ -151,7 +216,7 @@ npm run dev
 
 ---
 
-### Frontend Setup
+## Frontend
 
 ```bash
 cd frontend
@@ -161,16 +226,16 @@ npm run dev
 
 ---
 
-## 🔑 Environment Variables
+# 🔑 Environment Variables
 
-Create a `.env` file inside the backend directory.
+## Backend (.env)
 
 ```env
 PORT=5000
 
 MONGO_URI=your_mongodb_connection
 
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_secret
 
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 
@@ -179,7 +244,9 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-Create a `.env` file inside the frontend directory.
+---
+
+## Frontend (.env)
 
 ```env
 VITE_API_URL=http://localhost:5000/api
@@ -187,85 +254,101 @@ VITE_API_URL=http://localhost:5000/api
 
 ---
 
-## 🌐 API Endpoints
+# 🌐 API Endpoints
 
-### Authentication
+## Authentication
 
-- POST `/api/auth/register`
-- POST `/api/auth/login`
-
-### Posts
-
-- GET `/api/posts`
-- POST `/api/posts`
-- PUT `/api/posts/:id`
-- DELETE `/api/posts/:id`
-- POST `/api/posts/:id/like`
-- POST `/api/posts/:id/comment`
-
-### Users
-
-- GET `/api/users/:username`
-- PUT `/api/users/profile`
-- PUT `/api/users/follow/:id`
-- PUT `/api/users/save/:id`
-
-### Notifications
-
-- GET `/api/notifications`
-- PUT `/api/notifications/:id`
+```
+POST /api/auth/register
+POST /api/auth/login
+```
 
 ---
 
-## 🚀 Future Improvements
+## Posts
 
-- Real-Time Chat (Socket.IO)
-- Story Feature
-- Reels / Short Videos
-- Infinite Scrolling
-- Hashtags
-- Mentions
-- Email Verification
-- Forgot Password
-- Admin Dashboard
-- Push Notifications
+```
+GET    /api/posts
+POST   /api/posts
+PUT    /api/posts/:id
+DELETE /api/posts/:id
+POST   /api/posts/:id/like
+POST   /api/posts/:id/comment
+```
 
 ---
 
-## 📈 Learning Outcomes
+## Users
 
-This project helped me strengthen my knowledge of:
+```
+GET  /api/users/:username
+PUT  /api/users/profile
+PUT  /api/users/follow/:id
+PUT  /api/users/save/:id
+```
+
+---
+
+## Notifications
+
+```
+GET /api/notifications
+PUT /api/notifications/:id
+```
+
+---
+
+# 🚀 Future Improvements
+
+- 💬 Real-Time Chat (Socket.IO)
+- 📹 Stories
+- 🎥 Reels
+- ♾ Infinite Scrolling
+- #️⃣ Hashtags
+- @️⃣ Mentions
+- 📧 Email Verification
+- 🔒 Forgot Password
+- 👨‍💼 Admin Dashboard
+- 📱 Push Notifications
+
+---
+
+# 📚 Learning Outcomes
+
+This project helped me strengthen my understanding of:
 
 - MERN Stack Development
 - REST API Design
 - JWT Authentication
 - MongoDB & Mongoose
-- Cloudinary Image Upload
+- Cloudinary Integration
 - React Context API
-- Protected Routes
 - CRUD Operations
+- Protected Routes
 - State Management
 - Responsive UI Design
-- Modern React Development
+- Full Stack Application Deployment
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-**Shivam Verma**
+## Shivam Verma
 
-**Full Stack Developer (MERN)**
+**Full Stack Developer | MERN Stack**
 
-GitHub:
+🔗 GitHub
+
 https://github.com/shivamvermajss
 
-LinkedIn:
+🔗 LinkedIn
+
 https://www.linkedin.com/in/shivam-verma-227b37384/
 
 ---
 
-## ⭐ Support
+# ⭐ Show Your Support
 
-If you found this project helpful, consider giving it a ⭐ on GitHub.
+If you found this project useful, consider giving it a ⭐ on GitHub.
 
-It motivates me to build more amazing projects!
+It motivates me to build more amazing full-stack applications.
